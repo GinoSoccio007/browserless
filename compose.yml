@@ -1,0 +1,27 @@
+services:
+  browserless:
+    image: ghcr.io/browserless/chromium:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - TOKEN=${SERVICE_PASSWORD_BROWSERLESS}
+      - HOST=0.0.0.0
+      - PORT=3000
+      - CONCURRENT=5
+      - TIMEOUT=30000
+      - QUEUED=5
+      - DEBUG=browserless:*
+      - CORS=true
+      - ALLOW_GET=true
+      - ALLOW_FILE_PROTOCOL=true
+      - ENABLE_ROUTES=true
+      - PREBOOT_CHROME=true
+      - DEFAULT_LAUNCH_ARGS=["--no-sandbox", "--disable-dev-shm-usage"]
+      - MAX_MEMORY_PERCENT=80
+      - MAX_CPU_PERCENT=80
+      - HEALTH=true
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
