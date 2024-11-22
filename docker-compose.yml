@@ -1,0 +1,23 @@
+version: '3'
+services:
+  browserless:
+    image: browserless/chrome:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - TOKEN=${SERVICE_PASSWORD_BROWSERLESS}
+      - MAX_CONCURRENT_SESSIONS=10
+      - PREBOOT_CHROME=true
+      - HOST=0.0.0.0
+      - PORT=3000
+      - ENABLE_DEBUGGER=true
+      - ENABLE_METRICS=true
+      - ENABLE_CORS=true
+      - DEFAULT_BLOCK_ADS=true
+      - FUNCTION_ENABLE_INCOGNITO_MODE=true
+      - DEFAULT_LAUNCH_ARGS=["--no-sandbox"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
